@@ -1,0 +1,36 @@
+{
+  "name": "chefie",
+  "version": "1.0.0",
+  "description": "Recipes application",
+  "default": "index.html",
+  "scripts": {
+    "start": "parcel index.html",
+    "build": "parcel build index.html"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/ns-tung/chefie.git"
+  },
+  "keywords": [
+    "recipe",
+    "cooking",
+    "recipes",
+    "food",
+    "meal",
+    "cookbook",
+    "ingredients",
+    "kitchen",
+    "breakfast"
+  ],
+  "author": "Tung Nguyen",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/ns-tung/chefie/issues"
+  },
+  "homepage": "https://github.com/ns-tung/chefie#readme",
+  "devDependencies": {
+    "@parcel/transformer-sass": "^2.12.0",
+    "parcel": "^2.12.0",
+    "sass": "^1.77.8"
+  }
+}
