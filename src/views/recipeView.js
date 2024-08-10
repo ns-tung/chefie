@@ -8,11 +8,11 @@ class RecipeView {
   renderSpinner = function () {
     this.#clearView();
     const spinner = `
-    <div class="spinner">
-      <svg>
-        <use href="${icons}#icon-loader"></use>
-      </svg>
-    </div>`;
+      <div class="spinner">
+        <svg>
+          <use href="${icons}#icon-loader"></use>
+        </svg>
+      </div>`;
     this.#parentView.insertAdjacentHTML('afterbegin', spinner);
   }
 
@@ -22,6 +22,10 @@ class RecipeView {
     const markup = this.#generateRecipe();
     this.#parentView.insertAdjacentHTML('afterbegin', markup);
   };
+
+  addHandlerRender(handler) {
+    ['hashchange', 'load'].forEach(event => window.addEventListener(event, handler));
+  }
 
   #clearView() {
     this.#parentView.innerHTML = '';

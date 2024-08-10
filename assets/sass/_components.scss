@@ -192,14 +192,14 @@
 .message,
 .error {
   max-width: 40rem;
-  margin: 0 auto;
+  margin: 20rem auto;
   padding: 5rem 4rem;
 
   display: flex;
 
   svg {
-    height: 3rem;
-    width: 3rem;
+    width: 10rem;
+    height: 6rem;
     fill: $color-primary;
     transform: translateY(-0.3rem);
   }
