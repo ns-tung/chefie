@@ -2,18 +2,44 @@ import icons from 'url:../../assets/images/icons.svg';
 import { toFraction } from "fraction-parser";
 
 class RecipeView {
-  #parentView = document.querySelector('.recipe');
   #data;
+  #parentView = document.querySelector('.recipe');
+  #error = 'We could not find that recipe. Please try another one!';
+  #message = '';
 
-  renderSpinner = function () {
-    this.#clearView();
+  renderSpinner() {
     const spinner = `
       <div class="spinner">
         <svg>
           <use href="${icons}#icon-loader"></use>
         </svg>
       </div>`;
+    this.#clearView();
     this.#parentView.insertAdjacentHTML('afterbegin', spinner);
+  }
+
+  renderError(message = this.#error) {
+    const error = `
+      <div class="error">
+        <svg>
+          <use href="${icons}#icon-alert-triangle"></use>
+        </svg>
+        <p>${message}</p>
+      </div>`;
+    this.#clearView();
+    this.#parentView.insertAdjacentHTML('afterbegin', error);
+  }
+
+  renderMessage(message = this.#message) {
+    const msg = `
+      <div class="message">
+        <svg>
+          <use href="${icons}#icon-smile"></use>
+        </svg>
+        <p>${message}</p>
+      </div>`;
+    this.#clearView();
+    this.#parentView.insertAdjacentHTML('afterbegin', msg);
   }
 
   render(data) {
