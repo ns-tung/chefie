@@ -1,15 +1,7 @@
-import * as model from './model.js';
-import recipeView from "./views/recipeView.js";
+import * as model from './model';
+import recipeView from "./views/recipeView";
 import 'core-js/stable'; // poly-filling
 import 'regenerator-runtime/runtime'; // poly-filling async/await
-
-// const timeout = function (s) {
-//   return new Promise(function (_, reject) {
-//     setTimeout(function () {
-//       reject(new Error(`Request took too long! Timeout after ${s} second`));
-//     }, s * 1000);
-//   });
-// };
 
 const controlRecipes = async function () {
   try {
