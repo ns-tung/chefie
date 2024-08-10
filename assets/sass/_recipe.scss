@@ -99,23 +99,38 @@
     transform: translateY(-1px);
   }
 
-  &__user-generated {
-    background-color: darken($color-grey-light-2, 2%);
-
+  &__user-generated,
+  &__bookmark {
+    width: 4rem;
+    height: 4rem;
     display: flex;
     align-items: center;
     justify-content: center;
-    height: 4rem;
-    width: 4rem;
     border-radius: 10rem;
-
-    margin-left: auto;
-    margin-right: 1.75rem;
-
+    background-color: darken($color-grey-light-2, 2%);
     svg {
       height: 2.25rem;
       width: 2.25rem;
       fill: $color-primary;
+    }
+  }
+
+  &__user-generated {
+    margin-left: auto;
+    margin-right: 1.75rem;
+  }
+
+  &__user-generated + &__bookmark {
+    margin-left: 0;
+  }
+
+  &__bookmark {
+    border: none;
+    cursor: pointer;
+    margin-left: auto;
+    transition: all 0.3s ease-in-out;
+    &:hover {
+      transform: scale(1.1);
     }
   }
 
