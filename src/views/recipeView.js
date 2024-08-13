@@ -11,6 +11,15 @@ class RecipeView extends View {
     ['hashchange', 'load'].forEach(event => window.addEventListener(event, handler));
   }
 
+  addHandlerServings(handler) {
+    this._parentView.addEventListener('click', function (e) {
+      const btn = e.target.closest('.btn--update-servings');
+      if (!btn) return;
+      const { servings } = btn.dataset;
+      if (+servings > 0) handler(+servings);
+    });
+  }
+
   _generateMarkup() {
     const { cookingTime, image, ingredients, publisher, servings, source, title } = this._data;
     return `
@@ -33,16 +42,16 @@ class RecipeView extends View {
           <svg class="recipe__info-icon">
             <use href="${icons}#icon-users"></use>
           </svg>
-          <span class="recipe__info-data recipe__info-data--people">${servings}</span>
+          <span class="recipe__info-data recipe__info-data--people">${servings < 10 ? `0${servings}` : servings}</span>
           <span class="recipe__info-text">servings</span>
 
           <div class="recipe__info-buttons">
-            <button class="btn--tiny btn--increase-servings">
+            <button class="btn--tiny btn--update-servings" data-servings="${servings - 1}">
               <svg>
                 <use href="${icons}#icon-minus-circle"></use>
               </svg>
             </button>
-            <button class="btn--tiny btn--increase-servings">
+            <button class="btn--tiny btn--update-servings" data-servings="${servings + 1}">
               <svg>
                 <use href="${icons}#icon-plus-circle"></use>
               </svg>
@@ -97,7 +106,7 @@ class RecipeView extends View {
         </svg>
         ${ing.quantity ? `<div class="recipe__quantity">${toFraction(ing.quantity, { useUnicodeVulgar: true })}</div>` : ''}
         <div class="recipe__description">
-          <span class="recipe__unit">${ing.unit}</span>
+          ${ing.unit ? `<span class="recipe__unit">${ing.unit}</span>` : ''}
           ${ing.description}
         </div>
       </li>`;

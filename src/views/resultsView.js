@@ -14,7 +14,7 @@ class ResultsView extends View {
     const { id, image, publisher, title } = recipe;
     return `
       <li class="preview">
-        <a class="preview__link preview__link--active" href="#${id}">
+        <a class="preview__link" href="#${id}">
           <figure class="preview__fig">
             <img src="${image}" alt="${title}" />
           </figure>
