@@ -120,6 +120,9 @@
 
   &__list {
     list-style: none;
+    .message {
+      margin: 1rem auto;
+    }
   }
 
   &__field {

@@ -1,26 +1,26 @@
 class SearchView {
 
-  constructor() { this._focusInput() }
+  constructor() { this.#focusInput() }
   _parentView = document.querySelector('.search');
-  _input = this._parentView.querySelector('.search__field');
+  #input = this._parentView.querySelector('.search__field');
 
   getQuery() {
-    const query = this._input.value;
-    this._clearInput();
+    const query = this.#input.value;
+    this.#clearInput();
     return query;
   }
 
-  _clearInput() {
-    this._input.blur();
-    this._input.value = '';
+  #clearInput() {
+    this.#input.blur();
+    this.#input.value = '';
   }
 
-  _focusInput() {
+  #focusInput() {
     document.addEventListener('keyup', e => {
       if (e.key === '/') {
-        this._input.focus();
-        const queryLength = this._input.value.length;
-        this._input.setSelectionRange(queryLength, queryLength);
+        this.#input.focus();
+        const queryLength = this.#input.value.length;
+        this.#input.setSelectionRange(queryLength, queryLength);
       }
     });
   }

@@ -10,21 +10,13 @@
 }
 
 .pagination {
+  display: flex;
   margin-top: auto;
-  padding: 0 3.5rem;
-
-  &::after {
-    content: '';
-    display: table;
-    clear: both;
-  }
+  justify-content: center;
 
   &__btn {
-    &--prev {
-      float: left;
-    }
-    &--next {
-      float: right;
+    &--prev + &--next {
+      margin-left: 2rem;
     }
   }
 }

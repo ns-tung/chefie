@@ -3,7 +3,7 @@ import icons from 'url:../../assets/images/icons.svg';
 export default class View {
   _data;
 
-  _clearView() {
+  #clearView() {
     this._parentView.innerHTML = '';
   }
 
@@ -14,7 +14,7 @@ export default class View {
           <use href="${icons}#icon-loader"></use>
         </svg>
       </div>`;
-    this._clearView();
+    this.#clearView();
     this._parentView.insertAdjacentHTML('afterbegin', spinner);
   }
 
@@ -26,7 +26,7 @@ export default class View {
         </svg>
         <p>${message}</p>
       </div>`;
-    this._clearView();
+    this.#clearView();
     this._parentView.insertAdjacentHTML('afterbegin', error);
   }
 
@@ -38,14 +38,14 @@ export default class View {
         </svg>
         <p>${message}</p>
       </div>`;
-    this._clearView();
+    this.#clearView();
     this._parentView.insertAdjacentHTML('afterbegin', msg);
   }
 
   render(data) {
     if (!data || (Array.isArray(data) && data.length === 0)) return this.renderError();
     this._data = data;
-    this._clearView();
+    this.#clearView();
     const markup = this._generateMarkup();
     this._parentView.insertAdjacentHTML('afterbegin', markup);
   };

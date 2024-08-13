@@ -2,6 +2,7 @@ import * as model from './model';
 import recipeView from "./views/recipeView";
 import searchView from "./views/searchView";
 import resultsView from "./views/resultsView";
+import paginationView from "./views/paginationView";
 import 'core-js/stable'; // poly-filling
 import 'regenerator-runtime/runtime'; // poly-filling async/await
 
@@ -24,24 +25,35 @@ const controlRecipes = async function () {
 
 const controlSearchResults = async function () {
   try {
-    resultsView.renderSpinner();
     // 1. Get search query
     const query = searchView.getQuery();
-    if (!query) return;
+    const { query: stateQuery } = model.state.search;
+    if (!query || query === stateQuery) return;
 
     // 2. Load search results
+    resultsView.renderSpinner();
     await model.loadSearchResults(query);
-    const { results } = model.state.search;
 
-    // 3. Render results
-    resultsView.render(results);
+    // 3. Render results and pagination
+    controlPagination(1);
   } catch (error) {
     console.error(error);
   }
 }
 
+const controlPagination = function (goto) {
+  // 1. Render results
+  const results = model.getSearchResultsPage(goto);
+  resultsView.render(results);
+
+  // 2. Render pagination
+  const { search } = model.state;
+  paginationView.render(search);
+}
+
 const init = function () {
   recipeView.addHandlerRender(controlRecipes);
   searchView.addHandlerSearch(controlSearchResults);
+  paginationView.addHandlerClick(controlPagination);
 };
 init();
