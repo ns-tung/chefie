@@ -71,10 +71,10 @@
   }
 
   &__info {
-    font-size: 1.65rem;
-    text-transform: uppercase;
     display: flex;
-    align-items: center;
+    font-size: 1.65rem;
+    align-items: stretch;
+    text-transform: uppercase;
 
     &:not(:last-child) {
       margin-right: 4.5rem;

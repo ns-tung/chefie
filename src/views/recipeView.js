@@ -106,7 +106,7 @@ class RecipeView extends View {
         </svg>
         ${ing.quantity ? `<div class="recipe__quantity">${toFraction(ing.quantity, { useUnicodeVulgar: true })}</div>` : ''}
         <div class="recipe__description">
-          ${ing.unit ? `<span class="recipe__unit">${ing.unit}</span>` : ''}
+          ${ing.unit ? `<span class="recipe__unit">(${ing.unit})</span>` : ''}
           ${ing.description}
         </div>
       </li>`;

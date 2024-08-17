@@ -49,4 +49,23 @@ export default class View {
     const markup = this._generateMarkup();
     this._parentView.insertAdjacentHTML('afterbegin', markup);
   };
+
+  update(data) {
+    this._data = data;
+    const newMarkup = this._generateMarkup();
+    const virtualDOM = document.createRange().createContextualFragment(newMarkup);
+    const virtualElements = Array.from(virtualDOM.querySelectorAll('*'));
+    const currentElements = Array.from(this._parentView.querySelectorAll('*'));
+    virtualElements.forEach((virtualEl, i) => {
+      const currentEl = currentElements[i];
+      const isEqual = virtualEl.isEqualNode(currentEl);
+      const value = virtualEl.firstChild?.nodeValue.trim();
+      if (!isEqual && value !== '') currentEl.firstChild.nodeValue = value;
+      if (!isEqual) {
+        Array.from(virtualEl.attributes).forEach(attr => {
+          currentEl.setAttribute(attr.name, attr.value);
+        })
+      }
+    });
+  };
 }

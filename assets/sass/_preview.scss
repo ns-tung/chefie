@@ -1,13 +1,13 @@
 .preview {
   &__link {
+    transition: all 0.3s;
     &:link,
     &:visited {
       display: flex;
       align-items: center;
-      padding: 1.5rem 3.25rem;
-      transition: all 0.3s;
-      border-right: 1px solid #fff;
       text-decoration: none;
+      padding: 1.5rem 3.25rem;
+      border-right: 1px solid #fff;
     }
 
     &:hover {
@@ -15,7 +15,7 @@
       transform: translateY(-2px);
     }
 
-    &--active {
+    &.__active {
       background-color: $color-grey-light-1;
     }
   }
