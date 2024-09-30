@@ -59,13 +59,12 @@ export default class View {
     virtualElements.forEach((virtualEl, i) => {
       const currentEl = currentElements[i];
       const isEqual = virtualEl.isEqualNode(currentEl);
-      const value = virtualEl.firstChild?.nodeValue.trim();
-      if (!isEqual && value !== '') currentEl.firstChild.nodeValue = value;
-      if (!isEqual) {
+      const virtualValue = virtualEl.firstChild?.nodeValue.trim();
+      if (!isEqual && virtualValue !== '') currentEl.textContent = virtualEl.textContent;
+      if (!isEqual)
         Array.from(virtualEl.attributes).forEach(attr => {
           currentEl.setAttribute(attr.name, attr.value);
         })
-      }
     });
   };
 }

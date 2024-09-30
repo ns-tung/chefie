@@ -1,4 +1,5 @@
 import icons from 'url:../../assets/images/icons.svg';
+import imageDefault from 'url:../../assets/images/logo.png';
 import { toFraction } from "fraction-parser";
 import View from "./view";
 
@@ -20,11 +21,19 @@ class RecipeView extends View {
     });
   }
 
+  addHandlerBookmark(handler) {
+    this._parentView.addEventListener('click', function (e) {
+      const btn = e.target.closest('.recipe__bookmark');
+      if (!btn) return;
+      handler();
+    })
+  }
+
   _generateMarkup() {
-    const { cookingTime, image, ingredients, publisher, servings, source, title } = this._data;
+    const { bookmarked, cookingTime, image, ingredients, publisher, servings, source, title } = this._data;
     return `
       <figure class="recipe__fig">
-        <img src="${image}" alt="${title}" class="recipe__img" />
+        <img src="${image}" onerror="this.onerror=null; this.src='${imageDefault}'; this.style='object-fit:contain; margin:auto; width:50%;'" alt="${title}" class="recipe__img" />
         <h1 class="recipe__title">
           <span>${title}</span>
         </h1>
@@ -64,9 +73,9 @@ class RecipeView extends View {
             <use href="${icons}#icon-user"></use>
           </svg>
         </div> -->
-        <button class="recipe__bookmark">
-          <svg class="">
-            <use href="${icons}#icon-bookmark"></use>
+        <button class="recipe__bookmark${bookmarked ? ' __bookmarked' : ''}">
+          <svg>
+            <use href="${icons}#icon-bookmark${bookmarked ? '-fill' : ''}"></use>
           </svg>
         </button>
       </div>
@@ -98,16 +107,17 @@ class RecipeView extends View {
       </div>`;
   }
 
-  #generateIngredients(ing) {
+  #generateIngredients(ingredients) {
+    const { description, quantity, unit } = ingredients;
     return `
       <li class="recipe__ingredient">
         <svg class="recipe__icon">
           <use href="${icons}#icon-check"></use>
         </svg>
-        ${ing.quantity ? `<div class="recipe__quantity">${toFraction(ing.quantity, { useUnicodeVulgar: true })}</div>` : ''}
+        ${quantity ? `<div class="recipe__quantity">${toFraction(quantity, { useUnicodeVulgar: true })}</div>` : ''}
         <div class="recipe__description">
-          ${ing.unit ? `<span class="recipe__unit">(${ing.unit})</span>` : ''}
-          ${ing.description}
+          ${unit ? `<span class="recipe__unit">(${unit})</span>` : ''}
+          ${description}
         </div>
       </li>`;
   }

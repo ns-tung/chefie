@@ -1,4 +1,5 @@
 import * as model from './model';
+import { FIRST_PAGE } from "./config";
 import recipeView from "./views/recipeView";
 import searchView from "./views/searchView";
 import resultsView from "./views/resultsView";
@@ -6,22 +7,45 @@ import paginationView from "./views/paginationView";
 import 'core-js/stable'; // poly-filling
 import 'regenerator-runtime/runtime'; // poly-filling async/await
 
+const renderResults = function (goto) {
+  // 1. Render results
+  const results = model.getSearchResultsPage(goto);
+  resultsView.render(results);
+
+  // 2. Render pagination
+  const { search } = model.state;
+  paginationView.render(search);
+  window.scrollTo({ top, behavior: "smooth" });
+}
+
+const updateSearchResults = function (id) {
+  const { results } = model.state.search;
+  if (results.length === 0) return;
+  model.changeRecipeLoadingState(id);
+  const resultsNew = model.getSearchResultsPage();
+  resultsView.update(resultsNew);
+}
+
 const controlRecipes = async function () {
+  const id = window.location.hash.slice(1);
+  if (!id) return;
   try {
-    const id = window.location.hash.slice(1);
-    if (!id) return;
-
-    const results = model.getSearchResultsPage();
-    resultsView.update(results);
-
-    // 1. Fetching recipe
+    // 1. Render spinner
     recipeView.renderSpinner();
-    await model.loadRecipe(id);
-    const { recipe } = model.state;
+    updateSearchResults(id);
 
-    // 2. Rendering recipe
+    // 2. Fetching recipe
+    await model.loadRecipe(id);
+
+    // 3. Rendering recipe
+    const { recipe } = model.state;
     recipeView.render(recipe);
+
+    // 4. Update search results
+    updateSearchResults(id);
+    window.scrollTo({ top, behavior: "smooth" });
   } catch (error) {
+    updateSearchResults(id);
     recipeView.renderError();
   }
 }
@@ -38,20 +62,10 @@ const controlSearchResults = async function () {
     await model.loadSearchResults(query);
 
     // 3. Render results and pagination
-    controlPagination(1);
+    renderResults(FIRST_PAGE);
   } catch (error) {
     console.error(error);
   }
-}
-
-const controlPagination = function (goto) {
-  // 1. Render results
-  const results = model.getSearchResultsPage(goto);
-  resultsView.render(results);
-
-  // 2. Render pagination
-  const { search } = model.state;
-  paginationView.render(search);
 }
 
 const controlServings = function (servings) {
@@ -63,10 +77,18 @@ const controlServings = function (servings) {
   recipeView.update(recipe);
 }
 
+const controlBookmark = function () {
+  model.changeBookmarkedState();
+  const { recipe } = model.state;
+  recipeView.update(recipe);
+  updateSearchResults();
+}
+
 const init = function () {
   recipeView.addHandlerRender(controlRecipes);
+  recipeView.addHandlerBookmark(controlBookmark);
   recipeView.addHandlerServings(controlServings);
   searchView.addHandlerSearch(controlSearchResults);
-  paginationView.addHandlerClick(controlPagination);
+  paginationView.addHandlerClick(renderResults);
 };
 init();
