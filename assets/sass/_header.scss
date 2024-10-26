@@ -98,7 +98,8 @@
       outline: none;
     }
 
-    &:hover {
+    &:hover,
+    &.hover {
       background-color: $color-grey-light-2;
     }
   }
@@ -120,8 +121,18 @@
 
   &__list {
     list-style: none;
+    .error,
     .message {
-      margin: 1rem auto;
+      margin: 0 auto;
+    }
+  }
+
+  .preview__link {
+    &.__loading {
+      .spinner {
+        top: 50%;
+        transform: translateY(-50%);
+      }
     }
   }
 
@@ -140,7 +151,8 @@
   }
 
   &:hover,
-  .nav__btn--bookmarks:hover + & {
+  .nav__btn--bookmarks:hover + &,
+  .nav__btn--bookmarks.hover + & {
     visibility: visible;
     opacity: 1;
   }

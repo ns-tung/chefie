@@ -18,3 +18,8 @@ export const getJSON = async function (url) {
     throw error;
   }
 }
+
+export const triggerHover = function (element, s) {
+  element.classList.add('hover');
+  setTimeout(() => element.classList.remove('hover'), s * 1000);
+}

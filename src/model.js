@@ -82,8 +82,10 @@ export const changeBookmarkedState = function () {
 
   if (bookmarked) {
     const index = bookmarks.findIndex(bookmark => bookmark.id === id);
-    state.bookmarks.splice(index, 1); // remove current recipe from bookmarks array
-  } else state.bookmarks.push(recipe); // add current recipe to bookmarks array
+    state.bookmarks.splice(index, 1); // remove current recipe from the bookmarks array
+  } else {
+    state.bookmarks.push(recipe); // add current recipe to the bookmarks array
+  }
 
   // mark current recipe as bookmarked / NOT bookmarked
   state.recipe.bookmarked = !bookmarked;
@@ -96,6 +98,8 @@ export const changeBookmarkedState = function () {
 
 export const changeRecipeLoadingState = function (id) {
   if (!id) return;
-  const { results } = state.search;
+  const { bookmarks, search } = state;
+  const { results } = search;
   results.forEach(result => { if (result.id === id) result.loading = !result.loading; });
+  bookmarks.forEach(bookmark => { if (bookmark.id === id) bookmark.loading = !bookmark.loading; });
 }

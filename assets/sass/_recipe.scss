@@ -116,6 +116,9 @@
     &:hover {
       transform: scale(1.1);
     }
+    &:focus-visible {
+      outline-color: $color-grad-1;
+    }
     svg {
       width: 2.25rem;
       height: 2.25rem;

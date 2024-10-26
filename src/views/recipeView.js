@@ -1,7 +1,7 @@
+import View from "./view";
+import { toFraction } from "fraction-parser";
 import icons from 'url:../../assets/images/icons.svg';
 import imageDefault from 'url:../../assets/images/logo.png';
-import { toFraction } from "fraction-parser";
-import View from "./view";
 
 class RecipeView extends View {
   _parentView = document.querySelector('.recipe');

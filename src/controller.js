@@ -3,6 +3,7 @@ import { FIRST_PAGE } from "./config";
 import recipeView from "./views/recipeView";
 import searchView from "./views/searchView";
 import resultsView from "./views/resultsView";
+import bookmarkView from "./views/bookmarkView";
 import paginationView from "./views/paginationView";
 import 'core-js/stable'; // poly-filling
 import 'regenerator-runtime/runtime'; // poly-filling async/await
@@ -18,12 +19,15 @@ const renderResults = function (goto) {
   window.scrollTo({ top, behavior: "smooth" });
 }
 
-const updateSearchResults = function (id) {
+const updateRecipeState = function (id) {
   const { results } = model.state.search;
   if (results.length === 0) return;
   model.changeRecipeLoadingState(id);
   const resultsNew = model.getSearchResultsPage();
   resultsView.update(resultsNew);
+  const { bookmarks } = model.state;
+  if (!id || bookmarks.length === 0) return;
+  bookmarkView.update(bookmarks);
 }
 
 const controlRecipes = async function () {
@@ -32,7 +36,7 @@ const controlRecipes = async function () {
   try {
     // 1. Render spinner
     recipeView.renderSpinner();
-    updateSearchResults(id);
+    updateRecipeState(id);
 
     // 2. Fetching recipe
     await model.loadRecipe(id);
@@ -42,10 +46,10 @@ const controlRecipes = async function () {
     recipeView.render(recipe);
 
     // 4. Update search results
-    updateSearchResults(id);
+    updateRecipeState(id);
     window.scrollTo({ top, behavior: "smooth" });
   } catch (error) {
-    updateSearchResults(id);
+    updateRecipeState(id);
     recipeView.renderError();
   }
 }
@@ -81,7 +85,11 @@ const controlBookmark = function () {
   model.changeBookmarkedState();
   const { recipe } = model.state;
   recipeView.update(recipe);
-  updateSearchResults();
+  updateRecipeState();
+  const { bookmarks } = model.state;
+  bookmarkView.render(bookmarks);
+  bookmarkView.showBookmarks();
+  bookmarkView.changeBookmarkIcon(bookmarks.length);
 }
 
 const init = function () {
