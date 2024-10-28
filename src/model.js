@@ -94,6 +94,9 @@ export const changeBookmarkedState = function () {
   results.forEach(result => {
     if (result.id === id) result.bookmarked = !bookmarked;
   })
+
+  // save the bookmarks to local storage
+  localStorage.setItem('bookmarks', JSON.stringify(state.bookmarks));
 }
 
 export const changeRecipeLoadingState = function (id) {
@@ -103,3 +106,9 @@ export const changeRecipeLoadingState = function (id) {
   results.forEach(result => { if (result.id === id) result.loading = !result.loading; });
   bookmarks.forEach(bookmark => { if (bookmark.id === id) bookmark.loading = !bookmark.loading; });
 }
+
+// restore the bookmarks from local storage
+const init = (function () {
+  const savedBookmarks = localStorage.getItem('bookmarks');
+  if (savedBookmarks) state.bookmarks = JSON.parse(savedBookmarks);
+})();

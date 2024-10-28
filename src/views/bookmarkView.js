@@ -11,13 +11,17 @@ class BookmarkView extends View {
   _error = `No bookmarks yet. Find a recipe and bookmark it!`;
   _message = '';
 
+  addHandlerRender(handler) {
+    window.addEventListener('load', handler);
+  }
+
   _generateMarkup() {
     return this._data.map(bookmark => recipePreview.generatePreviewMarkup(bookmark)).join('');
   }
 
   changeBookmarkIcon(bookmarksLength) {
     if (bookmarksLength) {
-      this._bookmarksIcon.setAttribute('href', `${this._icon}-fill`);
+      setTimeout(() => this._bookmarksIcon.setAttribute('href', `${this._icon}-fill`), 800);
       return;
     }
     setTimeout(() => this._bookmarksIcon.setAttribute('href', `${this._icon}`), 800);
