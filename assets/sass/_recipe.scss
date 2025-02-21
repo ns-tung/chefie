@@ -105,23 +105,38 @@
     height: 4rem;
     border: none;
     display: flex;
-    cursor: pointer;
     margin-left: auto;
     align-items: center;
     border-radius: 10rem;
-    background-image: none;
     justify-content: center;
     transition: $transition-all;
-    box-shadow: inset 0 0 2px 2px $color-grey-light-3;
-    &:hover {
-      transform: scale(1.1);
-    }
     &:focus-visible {
       outline-color: $color-grad-1;
     }
     svg {
       width: 2.25rem;
       height: 2.25rem;
+    }
+  }
+
+  &__user-generated {
+    opacity: 0.8;
+    margin-left: auto;
+    margin-right: 1.75rem;
+    background-image: $gradient;
+    svg {
+      fill: $color-grey-light-1;
+    }
+  }
+
+  &__bookmark {
+    cursor: pointer;
+    background-image: none;
+    box-shadow: inset 0 0 2px 2px $color-grey-light-3;
+    &:hover {
+      transform: scale(1.1);
+    }
+    svg {
       fill: $color-primary;
       transition: $transition-all;
     }
@@ -132,11 +147,6 @@
         fill: $color-grey-light-1;
       }
     }
-  }
-
-  &__user-generated {
-    margin-left: auto;
-    margin-right: 1.75rem;
   }
 
   &__user-generated + &__bookmark {

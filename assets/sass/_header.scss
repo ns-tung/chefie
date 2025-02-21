@@ -127,15 +127,6 @@
     }
   }
 
-  .preview__link {
-    &.__loading {
-      .spinner {
-        top: 50%;
-        transform: translateY(-50%);
-      }
-    }
-  }
-
   &__field {
     cursor: pointer;
     padding: 0 4rem;
@@ -151,8 +142,8 @@
   }
 
   &:hover,
-  .nav__btn--bookmarks:hover + &,
-  .nav__btn--bookmarks.hover + & {
+  .btn-bookmarks:hover + &,
+  .btn-bookmarks.hover + & {
     visibility: visible;
     opacity: 1;
   }

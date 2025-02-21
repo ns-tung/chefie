@@ -20,14 +20,10 @@ class BookmarkView extends View {
   }
 
   changeBookmarkIcon(bookmarksLength) {
-    if (bookmarksLength) {
-      setTimeout(() => this._bookmarksIcon.setAttribute('href', `${this._icon}-fill`), 800);
-      return;
-    }
-    setTimeout(() => this._bookmarksIcon.setAttribute('href', `${this._icon}`), 800);
+    setTimeout(() => this._bookmarksIcon.setAttribute('href', `${bookmarksLength ? this._icon + '-fill' : this._icon}`), 500);
   }
 
-  showBookmarks() { triggerHover(this._btnBookmarks, TIMEOUT_HOVER); }
+  showBookmarksList() { triggerHover(this._btnBookmarks, TIMEOUT_HOVER); }
 }
 
 export default new BookmarkView();

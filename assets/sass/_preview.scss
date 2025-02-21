@@ -1,4 +1,5 @@
 .preview {
+  overflow: hidden;
   transition: all 0.3s ease-in-out;
   &:not(:last-child) {
     border-bottom: 1px solid $color-grey-light-1;
@@ -20,13 +21,18 @@
     }
 
     &.__active {
+      cursor: default;
       background-color: $color-grey-light-1;
     }
 
-    &.__loading .spinner,
-    &.__bookmarked .preview__user-bookmarked,
-    &.user-generated .preview__user-generated {
-      display: flex;
+    &.__loading .spinner {
+      display: block;
+    }
+
+    &.__bookmarked {
+      .preview__user-bookmarked {
+        display: flex;
+      }
     }
   }
 
@@ -96,36 +102,44 @@
     justify-content: flex-end;
   }
 
-  &__user-generated,
-  &__user-bookmarked {
-    width: 2rem;
-    height: 2rem;
-    display: none;
-    margin-left: auto;
-    align-items: center;
-    border-radius: 10rem;
-    justify-content: center;
-    background-image: $gradient;
-    svg {
-      height: 1.2rem;
-      width: 1.2rem;
-      fill: $color-grey-light-1;
+  &__user- {
+    &generated {
+      display: flex;
     }
-  }
 
-  &__user-generated + &__user-bookmarked {
-    margin-left: 0.5rem;
+    &bookmarked {
+      display: none;
+    }
+
+    &generated + &bookmarked {
+      margin-left: .5rem;
+    }
+
+    &generated,
+    &bookmarked {
+      width: 2rem;
+      height: 2rem;
+      align-items: center;
+      border-radius: 10rem;
+      justify-content: center;
+      background: $gradient;
+      svg {
+        width: 1.2rem;
+        height: 1.2rem;
+        fill: $color-grey-light-1;
+      }
+    }
   }
 
   .spinner {
     margin: 0;
-    top: 1.4rem;
+    top: 1.5rem;
     right: 3rem;
     display: none;
     position: absolute;
     svg {
-      width: 2.2rem;
-      height: 2.2rem;
+      width: 2rem;
+      height: 2rem;
     }
   }
 }

@@ -7,40 +7,30 @@ export default class View {
     this._parentView.innerHTML = '';
   }
 
-  renderSpinner() {
-    const spinner = `
-      <div class="spinner">
+  #generateMessage(type, message) {
+    const iconsMap = {
+      message: 'smile',
+      spinner: 'loader',
+      error: 'alert-triangle',
+    };
+    const icon = iconsMap[type];
+    const markup = `
+      <div class="${type}">
         <svg>
-          <use href="${icons}#icon-loader"></use>
+          <use href="${icons}#icon-${icon}"></use>
         </svg>
+        ${message ? `<p>${message}</p>` : ''}
       </div>`;
+
     this.#clearView();
-    this._parentView.insertAdjacentHTML('afterbegin', spinner);
+    this._parentView.insertAdjacentHTML('afterbegin', markup);
   }
 
-  renderError(message = this._error) {
-    const error = `
-      <div class="error">
-        <svg>
-          <use href="${icons}#icon-alert-triangle"></use>
-        </svg>
-        <p>${message}</p>
-      </div>`;
-    this.#clearView();
-    this._parentView.insertAdjacentHTML('afterbegin', error);
-  }
+  renderSpinner(message) { this.#generateMessage('spinner', message) };
 
-  renderMessage(message = this._message) {
-    const msg = `
-      <div class="message">
-        <svg>
-          <use href="${icons}#icon-smile"></use>
-        </svg>
-        <p>${message}</p>
-      </div>`;
-    this.#clearView();
-    this._parentView.insertAdjacentHTML('afterbegin', msg);
-  }
+  renderError(message = this._error) { this.#generateMessage('error', message) };
+
+  renderMessage(message = this._message) { this.#generateMessage('message', message) };
 
   render(data) {
     if (!data || (Array.isArray(data) && data.length === 0)) return this.renderError();
@@ -60,11 +50,10 @@ export default class View {
       const currentEl = currentElements[i];
       const isEqual = virtualEl.isEqualNode(currentEl);
       const virtualValue = virtualEl.firstChild?.nodeValue.trim();
+      if (!currentEl) return;
       if (!isEqual && virtualValue !== '') currentEl.textContent = virtualEl.textContent;
       if (!isEqual)
-        Array.from(virtualEl.attributes).forEach(attr => {
-          currentEl.setAttribute(attr.name, attr.value);
-        })
+        Array.from(virtualEl.attributes).forEach(attr => currentEl.setAttribute(attr.name, attr.value));
     });
   };
 }

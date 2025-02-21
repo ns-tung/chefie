@@ -30,7 +30,7 @@ class RecipeView extends View {
   }
 
   _generateMarkup() {
-    const { bookmarked, cookingTime, image, ingredients, publisher, servings, source, title } = this._data;
+    const { bookmarked, cookingTime, image, ingredients, key, publisher, servings, source, title } = this._data;
     return `
       <figure class="recipe__fig">
         <img src="${image}" onerror="this.onerror=null; this.src='${imageDefault}'; this.style='object-fit:contain; margin:auto; width:50%;'" alt="${title}" class="recipe__img" />
@@ -68,11 +68,11 @@ class RecipeView extends View {
           </div>
         </div>
 
-        <!-- <div class="recipe__user-generated">
+        ${key ? `<div class="recipe__user-generated">
           <svg>
             <use href="${icons}#icon-user"></use>
           </svg>
-        </div> -->
+        </div>` : ''}
         <button class="recipe__bookmark${bookmarked ? ' __bookmarked' : ''}">
           <svg>
             <use href="${icons}#icon-bookmark${bookmarked ? '-fill' : ''}"></use>

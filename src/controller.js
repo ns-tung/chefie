@@ -1,9 +1,11 @@
 import * as model from './model';
 import { FIRST_PAGE } from "./config";
+import { delay, scrollToTop } from "./helpers";
 import recipeView from "./views/recipeView";
 import searchView from "./views/searchView";
 import resultsView from "./views/resultsView";
 import bookmarkView from "./views/bookmarkView";
+import addRecipeView from "./views/addRecipeView";
 import paginationView from "./views/paginationView";
 import 'core-js/stable'; // poly-filling
 import 'regenerator-runtime/runtime'; // poly-filling async/await
@@ -16,18 +18,18 @@ const renderResults = function (goto) {
   // 2. Render pagination
   const { search } = model.state;
   paginationView.render(search);
-  window.scrollTo({ top, behavior: "smooth" });
+  scrollToTop();
 }
 
 const updateRecipeState = function (id) {
-  const { results } = model.state.search;
-  if (results.length === 0) return;
   model.changeRecipeLoadingState(id);
-  const resultsNew = model.getSearchResultsPage();
-  resultsView.update(resultsNew);
+  const { results } = model.state.search;
+  if (results.length !== 0) {
+    const resultsNew = model.getSearchResultsPage();
+    resultsView.update(resultsNew);
+  }
   const { bookmarks } = model.state;
-  if (!id || bookmarks.length === 0) return;
-  bookmarkView.update(bookmarks);
+  if (id && bookmarks.length !== 0) bookmarkView.update(bookmarks);
 }
 
 const controlRecipes = async function () {
@@ -47,7 +49,7 @@ const controlRecipes = async function () {
 
     // 4. Update search results
     updateRecipeState(id);
-    window.scrollTo({ top, behavior: "smooth" });
+    scrollToTop();
   } catch (error) {
     updateRecipeState(id);
     recipeView.renderError();
@@ -88,14 +90,50 @@ const controlBookmark = function () {
   updateRecipeState();
   const { bookmarks } = model.state;
   bookmarkView.render(bookmarks);
-  bookmarkView.showBookmarks();
+  bookmarkView.showBookmarksList();
   bookmarkView.changeBookmarkIcon(bookmarks.length);
 }
 
 const controlSavedBookmark = function () {
   const { bookmarks } = model.state;
+  if (bookmarks.length === 0) return;
   bookmarkView.render(bookmarks);
   bookmarkView.changeBookmarkIcon(bookmarks.length);
+}
+
+const controlAddRecipe = async function (newRecipe) {
+  try {
+    addRecipeView.toggleModalState('uploading');
+    addRecipeView.renderSpinner('Uploading ...');
+
+    await model.uploadRecipe(newRecipe);
+
+    addRecipeView.toggleModalState('success');
+    addRecipeView.renderMessage();
+
+    await delay(2000);
+    addRecipeView.toggleModal();
+
+    await delay(500);
+    addRecipeView.toggleModalState();
+    addRecipeView.toggleModalContent(true);
+
+    // Render recipe
+    const { recipe, bookmarks } = model.state;
+    window.history.pushState(null, '', `#${recipe.id}`);
+    recipeView.render(recipe);
+    bookmarkView.render(bookmarks);
+    bookmarkView.showBookmarksList();
+    bookmarkView.changeBookmarkIcon(bookmarks.length);
+  } catch (error) {
+    console.error(error);
+    addRecipeView.toggleModalState('error');
+    addRecipeView.renderError(error);
+
+    await delay(2000);
+    addRecipeView.toggleModalState();
+    addRecipeView.toggleModalContent(false, error.index);
+  }
 }
 
 const init = (function () {
@@ -105,4 +143,6 @@ const init = (function () {
   searchView.addHandlerSearch(controlSearchResults);
   paginationView.addHandlerClick(renderResults);
   bookmarkView.addHandlerRender(controlSavedBookmark);
-})();
+  addRecipeView.addHandlerUpload(controlAddRecipe);
+});
+init();

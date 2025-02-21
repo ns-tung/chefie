@@ -24,15 +24,16 @@
 
 .btn {
   @extend %btn;
-
   padding: 1.5rem 4rem;
   font-size: 1.5rem;
   font-weight: 600;
-
   svg {
-    height: 2.25rem;
     width: 2.25rem;
+    height: 2.25rem;
     fill: currentColor;
+  }
+  &:focus-visible {
+    outline: none;
   }
 }
 
@@ -194,7 +195,7 @@
   max-width: 40rem;
   margin: 20rem auto;
   padding: 5rem 4rem;
-
+  align-items: center;
   display: flex;
 
   svg {
