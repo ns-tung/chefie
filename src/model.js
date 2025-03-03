@@ -7,6 +7,7 @@ export const state = {
     page: 1,
     query: '',
     results: [],
+    totalPage: 1,
     resultsPerPage: RESULTS_PER_PAGE
   },
   bookmarks: []
@@ -45,9 +46,10 @@ export const loadRecipe = async function(id) {
 
 export const loadSearchResults = async function(query) {
   try {
-    const { bookmarks } = state;
+    const { bookmarks, search } = state;
     state.search.query = query;
     const { recipes } = await AJAX(`${API_URL}?search=${query}&key=${KEY}`);
+    state.search.totalPage = Math.ceil(recipes.length / search.resultsPerPage);
     state.search.results = recipes.map(rec => {
       const recipe = {
         id: rec.id,

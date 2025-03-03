@@ -4,18 +4,33 @@ import icons from 'url:../../assets/images/icons.svg';
 class PaginationView extends View {
   _parentView = document.querySelector('.pagination');
 
+  constructor(){
+    super();
+    this._parentView && this.#shadowObserver();
+  };
+
   addHandlerClick(handler) {
     this._parentView.addEventListener('click', function (e) {
       const btn = e.target.closest('.btn--inline');
       if (!btn) return;
       const goto = +btn.dataset.goto;
       handler(goto);
+      this.previousElementSibling.scrollTo({ top: 0, behavior: "smooth" });
+    });
+  }
+
+  #shadowObserver() {
+    const results = this._parentView.previousElementSibling;
+    const mutateObserver = new MutationObserver(() => {
+        const { scrollHeight, clientHeight } = results;
+        if (scrollHeight > clientHeight) this._parentView.classList.add('shadow');
+        else this._parentView.classList.remove('shadow');
     })
+    mutateObserver.observe(results, { childList: true });
   }
 
   _generateMarkup() {
-    const { page, results, resultsPerPage } = this._data;
-    const totalPage = Math.ceil(results.length / resultsPerPage);
+    const { page, totalPage } = this._data;
 
     // only 1 page
     if (totalPage === 1) return '';
@@ -31,6 +46,8 @@ class PaginationView extends View {
   }
 
   #generateButtons(page, type = '') {
+
+    const current = `<span class="current-page">${page}</span>`;
 
     const next = type === 'next' || type === '' ? `
       <button class="btn--inline pagination__btn--next" data-goto="${page + 1}">
@@ -49,9 +66,9 @@ class PaginationView extends View {
       </button>` : '';
 
     switch (type) {
-      case 'next': return next;
-      case 'prev': return prev;
-      default: return prev + next;
+      case 'next': return current + next;
+      case 'prev': return prev + current;
+      default: return prev + current + next;
     }
   }
 }

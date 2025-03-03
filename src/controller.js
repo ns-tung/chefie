@@ -1,6 +1,6 @@
 import * as model from './model';
 import { FIRST_PAGE } from "./config";
-import { delay, scrollToTop } from "./helpers";
+import { delay } from "./helpers";
 import recipeView from "./views/recipeView";
 import searchView from "./views/searchView";
 import resultsView from "./views/resultsView";
@@ -14,11 +14,10 @@ const renderResults = function (goto) {
   // 1. Render results
   const results = model.getSearchResultsPage(goto);
   resultsView.render(results);
-
+  if (results.length === 0) return;
   // 2. Render pagination
   const { search } = model.state;
   paginationView.render(search);
-  scrollToTop();
 }
 
 const updateRecipeState = function (id) {
@@ -29,12 +28,19 @@ const updateRecipeState = function (id) {
     resultsView.update(resultsNew);
   }
   const { bookmarks } = model.state;
-  if (id && bookmarks.length !== 0) bookmarkView.update(bookmarks);
+  id && bookmarks.length !== 0 && bookmarkView.update(bookmarks);
 }
 
 const controlRecipes = async function () {
   const id = window.location.hash.slice(1);
-  if (!id) return;
+  if (!id) {
+    const { results } = model.state.search;
+    recipeView.defaultView(results.length);
+    updateRecipeState();
+    const { bookmarks } = model.state;
+    bookmarks.length !== 0 && bookmarkView.update(bookmarks);
+    return;
+  }
   try {
     // 1. Render spinner
     recipeView.renderSpinner();
@@ -49,7 +55,6 @@ const controlRecipes = async function () {
 
     // 4. Update search results
     updateRecipeState(id);
-    scrollToTop();
   } catch (error) {
     updateRecipeState(id);
     recipeView.renderError();
@@ -64,6 +69,7 @@ const controlSearchResults = async function () {
     if (!query || query === stateQuery) return;
 
     // 2. Load search results
+    paginationView.clearView();
     resultsView.renderSpinner();
     await model.loadSearchResults(query);
 

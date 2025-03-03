@@ -1,15 +1,50 @@
 import View from "./view";
 import { toFraction } from "fraction-parser";
 import icons from 'url:../../assets/images/icons.svg';
-import imageDefault from 'url:../../assets/images/logo.png';
+import imageDefault from 'url:../../assets/images/logo.svg';
 
 class RecipeView extends View {
   _parentView = document.querySelector('.recipe');
   _error = 'We could not find that recipe. Please try another one!';
   _message = '';
+  
+  constructor() {
+    super();
+    this._parentView && this.#stickyObserver();
+  }
+
+  #stickyObserver() {
+    const recipe = this._parentView;
+    const detailsObserver = new IntersectionObserver( entries => {
+      entries.forEach( entry => {
+        if (entry.intersectionRatio < 1) entry.target.classList.add('sticky');
+        else entry.target.classList.remove('sticky');
+      });
+    }, { root: recipe, threshold: 1, rootMargin: '-1px 0px 0px' });
+
+    const recipeObserver = new MutationObserver(() => {
+      const details = recipe.querySelector(".recipe__details");
+      details !== null && detailsObserver.observe(details);
+    });
+    
+    recipeObserver.observe(recipe, { childList: true });
+  }
 
   addHandlerRender(handler) {
     ['hashchange', 'load'].forEach(event => window.addEventListener(event, handler));
+  }
+
+  defaultView(hasResult) {
+    const message = hasResult !== 0
+      ? "Let's search for a recipe or view one in the left list."
+      : "Start by searching for a recipe or an ingredient. Have fun!";
+    this._parentView.innerHTML =
+      `<div class="message">
+        <svg>
+          <use href="${icons}#icon-smile"></use>
+        </svg>
+        <p>${message}</p>
+      </div>`;
   }
 
   addHandlerServings(handler) {

@@ -1,12 +1,18 @@
 .recipe {
+  overflow: auto;
+  position: relative;
+  max-height: calc(100dvh - ($header-height + $container-gap * 2));
   background-color: $color-grey-light-1;
+  
+  @media only screen and (max-width: $bp-large) {
+    max-height: calc(100dvh - $header-height);
+  }
 
   ///////////
   // FIGURE
   &__fig {
     height: 32rem;
     position: relative;
-    // transform: scale(1.04) translateY(-1px);
     transform-origin: top;
 
     &::before {
@@ -17,12 +23,8 @@
       position: absolute;
       top: 0;
       left: 0;
-      background-image: linear-gradient(
-        to right bottom,
-        $color-grad-1,
-        $color-grad-2
-      );
-      opacity: 0.6;
+      background: $color-primary;
+      opacity: 0.4;
     }
   }
 
@@ -35,26 +37,21 @@
 
   &__title {
     position: absolute;
-    bottom: 0;
-    left: 50%;
-    transform: translate(-50%, 20%) skewY(-6deg);
-    color: #fff;
+    bottom: 50%;
+    left: 8rem;
+    transform: translateY(50%) skewY(-6deg);
+    color: $white-color;
     font-weight: 700;
     font-size: 3.25rem;
-    text-transform: uppercase;
     width: 50%;
-    line-height: 1.95;
-    text-align: center;
+    line-height: 2;
 
     span {
       -webkit-box-decoration-break: clone;
       box-decoration-break: clone;
-      padding: 1.3rem 2rem;
-      background-image: linear-gradient(
-        to right bottom,
-        $color-grad-1,
-        $color-grad-2
-      );
+      padding: 0.8rem 2rem;
+      background: rgba($color-primary,.8);
+      border-radius: 1rem;
     }
 
     @media only screen and (max-width: $bp-medium) {
@@ -67,7 +64,13 @@
   &__details {
     display: flex;
     align-items: center;
-    padding: 7.5rem 8rem 3.5rem 8rem;
+    padding: 3rem 8rem;
+    background: $color-grey-light-1;
+    &.sticky {
+      top: 0;
+      position: sticky;
+      box-shadow: 0 1rem 1rem -1rem rgba($color-grey-dark-1,.4);
+    }
   }
 
   &__info {
@@ -79,24 +82,24 @@
     &:not(:last-child) {
       margin-right: 4.5rem;
     }
-  }
-
-  &__info-icon {
-    height: 2.35rem;
-    width: 2.35rem;
-    fill: $color-primary;
-    margin-right: 1.15rem;
-  }
-
-  &__info-data {
-    margin-right: 0.5rem;
-    font-weight: 700;
-  }
-
-  &__info-buttons {
-    display: flex;
-    margin-left: 1.6rem;
-    transform: translateY(-1px);
+  
+    &-icon {
+      height: 2.35rem;
+      width: 2.35rem;
+      fill: $color-primary;
+      margin-right: 1.15rem;
+    }
+  
+    &-data {
+      margin-right: 0.5rem;
+      font-weight: 700;
+    }
+  
+    &-buttons {
+      display: flex;
+      margin-left: 1.6rem;
+      transform: translateY(-1px);
+    }
   }
 
   &__user-generated,
@@ -109,9 +112,9 @@
     align-items: center;
     border-radius: 10rem;
     justify-content: center;
-    transition: $transition-all;
+    transition: $transition-fast;
     &:focus-visible {
-      outline-color: $color-grad-1;
+      outline-color: $color-primary;
     }
     svg {
       width: 2.25rem;
@@ -120,10 +123,9 @@
   }
 
   &__user-generated {
-    opacity: 0.8;
     margin-left: auto;
     margin-right: 1.75rem;
-    background-image: $gradient;
+    background: $color-primary;
     svg {
       fill: $color-grey-light-1;
     }
@@ -131,18 +133,18 @@
 
   &__bookmark {
     cursor: pointer;
-    background-image: none;
-    box-shadow: inset 0 0 2px 2px $color-grey-light-3;
+    background: $color-grey-light-0;
+    outline: 1px solid $color-primary;
     &:hover {
-      transform: scale(1.1);
+      svg {transform: scale(1.1);}
     }
     svg {
       fill: $color-primary;
-      transition: $transition-all;
+      transition: $transition-fast;
     }
     &.__bookmarked {
-      box-shadow: none;
-      background-image: $gradient;
+      outline: none;
+      background: $color-primary;
       svg {
         fill: $color-grey-light-1;
       }
@@ -159,7 +161,7 @@
     padding: 5rem 8rem;
     font-size: 1.6rem;
     line-height: 1.4;
-    background-color: $color-grey-light-2;
+    background-color: $white-color;
     display: flex;
     flex-direction: column;
     align-items: center;

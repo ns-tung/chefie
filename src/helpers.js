@@ -21,8 +21,6 @@ export const createIngredientError = function (message, index = undefined) {
 
 export const delay = (ms) => new Promise(resolve => setTimeout(resolve, ms));
 
-export const scrollToTop = () => window.scrollTo({ top: 0, behavior: "smooth" });
-
 export const triggerHover = function (element, s) {
   element.classList.add('hover');
   setTimeout(() => element.classList.remove('hover'), s * 1000);

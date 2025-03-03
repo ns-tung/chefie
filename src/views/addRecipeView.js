@@ -34,7 +34,10 @@ class AddRecipeView extends View {
   #addHandlerCloseModal() {
     this.#overlay.addEventListener('click', this.toggleModal.bind(this));
     this.#btnClose.addEventListener('click', this.toggleModal.bind(this));
-    document.addEventListener('keydown', e => e.key === 'Escape' && this.toggleModal());
+    document.addEventListener('keydown', e => {
+      const formClosing = this.#modal.classList.contains('hidden');
+      e.key === 'Escape' && !formClosing && this.toggleModal();
+    });
   }
 
   toggleModal() {

@@ -1,16 +1,22 @@
 %btn {
-  background-image: $gradient;
-  border-radius: 10rem;
   border: none;
-  text-transform: uppercase;
-  color: #fff;
-  cursor: pointer;
   display: flex;
+  cursor: pointer;
+  user-select: none;
+  color: $white-color;
   align-items: center;
-  transition: all 0.2s;
+  border-radius: 1rem;
+  text-transform: uppercase;
+  background: $color-primary;
+  transition: $transition-fast;
+
+  svg { transition: $transition-fast; }
 
   &:hover {
-    transform: scale(1.05);
+    svg {
+      transform: scale(1.2);
+      transition: $transition-fast;
+    }
   }
 
   &:focus {
@@ -24,7 +30,7 @@
 
 .btn {
   @extend %btn;
-  padding: 1.5rem 4rem;
+  padding: 1.5rem 3rem;
   font-size: 1.5rem;
   font-weight: 600;
   svg {
@@ -35,122 +41,128 @@
   &:focus-visible {
     outline: none;
   }
-}
-
-.btn--small {
-  &,
-  &:link,
-  &:visited {
-    @extend %btn;
-
-    font-size: 1.4rem;
+  
+  &--small {
+    &,
+    &:link,
+    &:visited {
+      @extend %btn;
+  
+      font-size: 1.4rem;
+      font-weight: 600;
+      padding: 1.25rem 2.25rem;
+      text-decoration: none;
+  
+      svg {
+        height: 1.75rem;
+        width: 1.75rem;
+        fill: currentColor;
+      }
+    }
+  }
+  
+  &--inline {
+    color: $color-primary;
+    font-size: 1.3rem;
     font-weight: 600;
-    padding: 1.25rem 2.25rem;
-    text-decoration: none;
-
+    border: none;
+    background-color: $color-grey-light-1;
+    padding: 0.8rem 1.2rem;
+    border-radius: .6rem;
+    cursor: pointer;
+  
+    display: flex;
+    align-items: center;
+    transition: $transition-fast;
+  
     svg {
-      height: 1.75rem;
-      width: 1.75rem;
+      height: 1.6rem;
+      width: 1.6rem;
       fill: currentColor;
+      margin: 0 0.2rem;
+      transition: $transition-fast;
+    }
+  
+    span {
+      margin: 0 0.4rem;
+    }
+  
+    &:hover {
+      svg {
+        transform: scale(1.2);
+        transition: $transition-fast;
+      }
+    }
+  
+    &:focus {
+      outline: none;
+    }
+  }
+  
+  &--round {
+    background-color: $color-primary;
+    border-radius: 50%;
+    border: none;
+    cursor: pointer;
+    height: 4.5rem;
+    width: 4.5rem;
+    transition: $transition-fast;
+  
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  
+    &:hover {
+      transform: scale(1.07);
+    }
+  
+    &:focus {
+      outline: none;
+    }
+  
+    svg {
+      height: 2.5rem;
+      width: 2.5rem;
+      fill: $white-color;
+    }
+  }
+  
+  &--tiny {
+    height: 2rem;
+    width: 2rem;
+    border: none;
+    background: none;
+    cursor: pointer;
+  
+    svg {
+      height: 100%;
+      width: 100%;
+      fill: $color-primary;
+      transition: $transition-fast;
+    }
+  
+    &:focus {
+      outline: none;
+    }
+  
+    &:hover svg {
+      transform: translateY(-1px);
+    }
+  
+    &:active svg {
+      transform: translateY(0);
+    }
+  
+    &:not(:last-child) {
+      margin-right: 0.3rem;
     }
   }
 }
 
-.btn--inline {
-  color: $color-primary;
-  font-size: 1.3rem;
-  font-weight: 600;
-  border: none;
-  background-color: $color-grey-light-1;
-  padding: 0.8rem 1.2rem;
-  border-radius: 10rem;
-  cursor: pointer;
-
-  display: flex;
-  align-items: center;
-  transition: all 0.2s;
-
-  svg {
-    height: 1.6rem;
-    width: 1.6rem;
-    fill: currentColor;
-    margin: 0 0.2rem;
-  }
-
-  span {
-    margin: 0 0.4rem;
-  }
-
-  &:hover {
-    color: $color-grad-2;
-    background-color: $color-grey-light-2;
-  }
-
-  &:focus {
-    outline: none;
-  }
-}
-
-.btn--round {
-  background-image: $gradient;
-  border-radius: 50%;
-  border: none;
-  cursor: pointer;
-  height: 4.5rem;
-  width: 4.5rem;
-  // margin-left: auto;
-  transition: all 0.2s;
-
-  display: flex;
-  align-items: center;
-  justify-content: center;
-
-  &:hover {
-    transform: scale(1.07);
-  }
-
-  &:focus {
-    outline: none;
-  }
-
-  svg {
-    height: 2.5rem;
-    width: 2.5rem;
-    fill: #fff;
-  }
-}
-
-.btn--tiny {
-  height: 2rem;
-  width: 2rem;
-  border: none;
-  background: none;
-  cursor: pointer;
-
-  svg {
-    height: 100%;
-    width: 100%;
-    fill: $color-primary;
-    transition: all 0.3s;
-  }
-
-  &:focus {
-    outline: none;
-  }
-
-  &:hover svg {
-    fill: $color-grad-2;
-    transform: translateY(-1px);
-  }
-
-  &:active svg {
-    fill: $color-grad-2;
-    transform: translateY(0);
-  }
-
-  &:not(:last-child) {
-    margin-right: 0.3rem;
-  }
+img {
+  height: auto;
+  max-width: 100%;
+  vertical-align: middle;
 }
 
 .heading--2 {
@@ -160,7 +172,6 @@
   text-transform: uppercase;
   margin-bottom: 2.5rem;
   text-align: center;
-  // transform: skewY(-3deg);
 }
 
 .link:link,

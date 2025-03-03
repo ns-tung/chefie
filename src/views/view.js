@@ -7,6 +7,8 @@ export default class View {
     this._parentView.innerHTML = '';
   }
 
+  get clearView() { return this.#clearView };
+
   #generateMessage(type, message) {
     const iconsMap = {
       message: 'smile',
@@ -49,11 +51,15 @@ export default class View {
     virtualElements.forEach((virtualEl, i) => {
       const currentEl = currentElements[i];
       const isEqual = virtualEl.isEqualNode(currentEl);
+      const hasSticky = currentEl?.classList.contains('sticky');
       const virtualValue = virtualEl.firstChild?.nodeValue.trim();
       if (!currentEl) return;
       if (!isEqual && virtualValue !== '') currentEl.textContent = virtualEl.textContent;
       if (!isEqual)
-        Array.from(virtualEl.attributes).forEach(attr => currentEl.setAttribute(attr.name, attr.value));
+        Array.from(virtualEl.attributes).forEach(attr => {
+          if (hasSticky) return;
+          currentEl.setAttribute(attr.name, attr.value);
+        });
     });
   };
 }
