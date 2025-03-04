@@ -24,7 +24,7 @@ class RecipeView extends View {
 
     const recipeObserver = new MutationObserver(() => {
       const details = recipe.querySelector(".recipe__details");
-      details !== null && detailsObserver.observe(details);
+      details && detailsObserver.observe(details);
     });
     
     recipeObserver.observe(recipe, { childList: true });

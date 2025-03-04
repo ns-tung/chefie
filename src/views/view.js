@@ -50,16 +50,13 @@ export default class View {
     const currentElements = Array.from(this._parentView.querySelectorAll('*'));
     virtualElements.forEach((virtualEl, i) => {
       const currentEl = currentElements[i];
-      const isEqual = virtualEl.isEqualNode(currentEl);
-      const hasSticky = currentEl?.classList.contains('sticky');
-      const virtualValue = virtualEl.firstChild?.nodeValue.trim();
-      if (!currentEl) return;
-      if (!isEqual && virtualValue !== '') currentEl.textContent = virtualEl.textContent;
-      if (!isEqual)
-        Array.from(virtualEl.attributes).forEach(attr => {
-          if (hasSticky) return;
-          currentEl.setAttribute(attr.name, attr.value);
-        });
-    });
+      if (currentEl) {
+        const hasSticky = currentEl.classList.contains('sticky');
+        const virtualValue = virtualEl.firstChild?.nodeValue.trim();
+        const updateTextContent = virtualValue && virtualValue !== '' && currentEl.textContent !== virtualEl.textContent;
+        const updateAttributes = !hasSticky && Array.from(virtualEl.attributes).some(attr => currentEl.getAttribute(attr.name) !== attr.value);
+        updateTextContent && (currentEl.textContent = virtualEl.textContent);
+        updateAttributes && Array.from(virtualEl.attributes).forEach(attr => currentEl.setAttribute(attr.name, attr.value));
+      }});
   };
 }

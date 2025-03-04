@@ -1,5 +1,5 @@
 import icons from 'url:../../assets/images/icons.svg';
-import imageDefault from 'url:../../assets/images/logo.svg';
+import imageDefault from 'url:../../assets/images/favicon.svg';
 
 class RecipePreview {
   generatePreviewMarkup(recipe, hasBookmark = false) {

@@ -114,15 +114,12 @@ export const changeBookmarkedState = function() {
 };
 
 export const changeRecipeLoadingState = function(id) {
-  if (!id) return;
-  const { bookmarks } = state;
-  const { results } = state.search;
-  results.forEach(result => {
-    if (result.id === id) result.loading = !result.loading;
-  });
-  bookmarks.forEach(bookmark => {
-    if (bookmark.id === id) bookmark.loading = !bookmark.loading;
-  });
+  if (id) {
+    const { bookmarks } = state;
+    const { results } = state.search;
+    results.forEach(result => result.id === id && (result.loading = !result.loading));
+    bookmarks.forEach(bookmark => bookmark.id === id && (bookmark.loading = !bookmark.loading));
+  }
 };
 
 export const uploadRecipe = async function(newRecipe) {
