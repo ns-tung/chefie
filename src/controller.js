@@ -35,8 +35,10 @@ const controlRecipes = async function () {
   const id = window.location.hash.slice(1);
   if (!id) {
     const { results } = model.state.search;
-    recipeView.defaultView(results.length);
-    updateRecipeState();
+    if (results.length) {
+      updateRecipeState();
+      recipeView.defaultView(results.length, true);
+    }
     const { bookmarks } = model.state;
     bookmarks.length !== 0 && bookmarkView.update(bookmarks);
     return;
@@ -75,6 +77,8 @@ const controlSearchResults = async function () {
 
     // 3. Render results and pagination
     renderResults(FIRST_PAGE);
+    const { results } = model.state.search;
+    recipeView.defaultView(results.length);
   } catch (error) {
     console.error(error);
   }
@@ -142,7 +146,7 @@ const controlAddRecipe = async function (newRecipe) {
   }
 }
 
-const init = (function () {
+const init = function () {
   recipeView.addHandlerRender(controlRecipes);
   recipeView.addHandlerBookmark(controlBookmark);
   recipeView.addHandlerServings(controlServings);
@@ -150,5 +154,5 @@ const init = (function () {
   paginationView.addHandlerClick(renderResults);
   bookmarkView.addHandlerRender(controlSavedBookmark);
   addRecipeView.addHandlerUpload(controlAddRecipe);
-});
+};
 init();
